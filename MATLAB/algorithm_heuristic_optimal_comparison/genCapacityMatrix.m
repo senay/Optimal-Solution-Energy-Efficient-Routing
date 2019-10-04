@@ -1,0 +1,1 @@
+template = fopen('routingTemplate.txt','r');

@@ -1,0 +1,33 @@
+#!/bin/bash
+i=0
+lambdaP=0
+lambdaN=0
+tot=0
+ii=0
+i=11
+numberflow=5
+totF=0
+RESULT=0
+all=5
+while read lambda	avgPower
+do
+	if [ $lambdaN -eq $ii ]
+	then
+		lambdaP=$lambda
+		lambdaN=$lambda
+	else		
+		lambdaP=$lambdaN
+		lambdaN=$lambda
+	fi
+	if [ $lambdaP -eq $lambdaN ]
+	then
+		tot=`echo $tot + $avgPower | bc`
+	else		 
+		RESULT=$(echo "$tot/$all" | bc -l)
+		totF=$tot
+		tot=$avgPower
+		echo "$lambdaP	$RESULT" >> energy_opt.dat
+	fi
+done < $i.'txt'
+RESULT=$(echo "$totF/$all" | bc -l)
+echo "$lambdaP	$RESULT" >> energy_opt.dat

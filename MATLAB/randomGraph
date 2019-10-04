@@ -1,0 +1,31 @@
+function [M]=matsrand(n,c)
+
+
+MM=0;   %arbitrary starting value
+while MM ~=n*c
+
+    M = sparse(zeros(n));       
+    ctin = zeros(1,n);  
+
+
+    for i=1:n
+        rp = randperm(n);   %generate vector of the randomly permuted order of n vertices
+        rp(rp==i)=[];       %get rid of itself to avoid self connection
+
+        noconnect=find(ctin(:)>=c); %generate list that i is not allowed to connect to
+        where=ismember(rp,noconnect);   %returns 1 to the subset noconnect in rp
+        noconnectind=find(where);
+
+        rp(noconnectind(:))=[];         %remove the neurons i is not allowed to connect to
+
+        if length(rp)<c
+            break
+        else
+            r=rp(1:c);
+        end
+        M(i,r)=1;
+        ctin(r)=ctin(r)+1;
+
+    end
+    MM=sum(ctin);
+end
